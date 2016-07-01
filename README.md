@@ -10,9 +10,21 @@ Skia 는 다른 이미지 처리 라이브러리와 비교하여 굉장히 빠�
 그런 관계로 본 프로젝트는 별도의 추가 관리는 없습니다. 어디까지나 참고용으로 사용해 주시기 바랍니다.
 
 # 빌드 하기
+## Skia 빌드
 먼저 skia 홈페이지에서 skia 를 클론 받아서 설치합니다. 관련 내용은 skia 홈페이지를 참고하시면 됩니다.<br />
-또한 [boost-Python](http://www.boost.org//) 이 필요합니다. boost-python 을 설치합니다.
+Ubuntu 에서 빌드할 경우 gyp 이전에 shared_library 옵션을 활성화 하여야 합니다.
 
+```bash
+$ export GYP_DEFINES="skia_shared_lib=1"
+$ bin/sync_and_gyp
+...
+```
+
+## boost-Python 설치
+또한 [boost-Python](http://www.boost.org//) 이 필요합니다. boost-python 을 설치합니다.<br />
+OSX 에서는 brew 를 이용하여 설치하는 것을 추천합니다. 굉장히 많은 시간과 귀찮음을 아낄 수 있습니다.
+
+## setup.py
 설치가 완료되면 setup.py 의 환경 설정 변수들을 변경한 후 다음 명령어로 라이브러리를 생성합니다.
 
 ```bash
