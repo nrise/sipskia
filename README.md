@@ -20,6 +20,9 @@ $ bin/sync_and_gyp
 ...
 ```
 
+Ubuntu 의 경우 Skia 빌드가 완료되면 out/Debug/ 하위에 lib/libskia.so 파일이 생성됩니다.<br />
+해당 파일을 LD_LIBRARY_PATH 중 한 곳에 복사합니다.
+
 ## boost-Python 설치
 또한 [boost-Python](http://www.boost.org//) 이 필요합니다. boost-python 을 설치합니다.<br />
 OSX 에서는 brew 를 이용하여 설치하는 것을 추천합니다. 굉장히 많은 시간과 귀찮음을 아낄 수 있습니다.<br />
