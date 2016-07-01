@@ -13,6 +13,8 @@ Skia 는 다른 이미지 처리 라이브러리와 비교하여 굉장히 빠�
 먼저 skia 홈페이지에서 skia 를 클론 받아서 설치합니다. 관련 내용은 skia 홈페이지를 참고하시면 됩니다.<br />
 또한 [boost-Python](http://www.boost.org//) 이 필요합니다. boost-python 을 설치합니다.
 
+설치가 완료되면 setup.py 의 환경 설정 변수들을 변경한 후 다음 명령어로 라이브러리를 생성합니다.
+
 ```bash
 $ python setup.py build_ext --inplace
 ```
