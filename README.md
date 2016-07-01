@@ -22,7 +22,13 @@ $ bin/sync_and_gyp
 
 ## boost-Python 설치
 또한 [boost-Python](http://www.boost.org//) 이 필요합니다. boost-python 을 설치합니다.<br />
-OSX 에서는 brew 를 이용하여 설치하는 것을 추천합니다. 굉장히 많은 시간과 귀찮음을 아낄 수 있습니다.
+OSX 에서는 brew 를 이용하여 설치하는 것을 추천합니다. 굉장히 많은 시간과 귀찮음을 아낄 수 있습니다.<br />
+Skia 와 마찬가지로 Ubuntu 에서 빌드할 경우 -fPIC 옵션을 줄 수 있도록 해야 합니다.
+
+```bash
+$ ./b2 cxxflags=-fPIC install
+...
+```
 
 ## setup.py
 설치가 완료되면 setup.py 의 환경 설정 변수들을 변경한 후 다음 명령어로 라이브러리를 생성합니다.
