@@ -6,8 +6,8 @@ from setuptools import setup, Extension
 
 module_name = 'sipskia'
 
-skia_include_home_prefix = '/Users/kimmoonsoo/skia'
-skia_lib_dir = '/Users/kimmoonsoo/skia/out/Release'
+skia_include_home_prefix = '/Users/moonsookim/skia'
+skia_lib_dir = '/Users/moonsookim/skia/out/Static'
 boost_python_include_dir = '/usr/local/include/'
 boost_python_lib_dir = '/usr/local/lib'
 
@@ -20,19 +20,7 @@ if 'linux' in sys.platform:
 
 if sys.platform == 'darwin':
     libraries = [
-        'boost_python', 'SkKTX', 'crash_handler', 'dng_sdk', 'etc1',
-        'experimental', 'flags', 'flags_common', 'genperf_libs', 'giflib',
-        'harfbuzz', 'icuuc', 'jpeg-turbo', 'jsoncpp', 'lua', 'microhttpd',
-        'nanomsg', 'picture_utils', 'piex', 'png_static', 'proc_stats',
-        'raw_codec', 'resources', 'sfntly', 'sk_tool_utils', 'skia_codec',
-        'skia_codec_android', 'skia_core', 'skia_effects', 'skia_images',
-        'skia_opts', 'skia_opts_avx', 'skia_opts_avx2', 'skia_opts_sse41',
-        'skia_opts_sse42', 'skia_opts_ssse3', 'skia_pdf', 'skia_ports',
-        'skia_sfnt', 'skia_skgpu', 'skia_skgputest', 'skia_svg',
-        'skia_utils', 'skia_views', 'skia_xml', 'skia_xps',
-        'test_public_includes', 'thermal_manager', 'timer', 'url_data_manager',
-        'webp_dec', 'webp_demux', 'webp_dsp', 'webp_dsp_enc', 'webp_enc',
-        'webp_utils', 'zlib'
+        'boost_python', 'skia',
     ]
 else:
     libraries = [
@@ -70,7 +58,7 @@ if sys.platform == 'darwin':
     cmd = [
         '-MMD', '-MF', 'sipskia.o.d', '-O3', '-gdwarf-2', '-fvisibility=hidden',
         '-Werror', '-mmacosx-version-min=10.7', '-arch', 'x86_64', '-mssse3',
-        '-Wall', '-Wextra', '-Winit-self', '-Wpointer-arith', '-Wsign-compare',
+        '-Wall', '-Winit-self', '-Wpointer-arith', '-Wsign-compare',
         '-Wno-unused-parameter', '-std=c++11', '-stdlib=libc++',
         '-fvisibility-inlines-hidden', '-fno-threadsafe-statics',
         # '-fno-rtti', '-fno-exceptions',
