@@ -92,9 +92,12 @@ $ ninja -C out/Static
 # sipskia
 ## 빌드
 sipskia 를 클론 받은 후 setup.py 파일의 상단에 있는 사용자 경로 설정 부분을 알맞게 고쳐줍니다.
+그 후 라이브러리를 생성합니다.
 ```bash
 $ python setup.py build_ext
 ```
+
+정상적으로 빌드가 완료되면 libsipskia.so 파일을 확인할 수 있습니다.
 
 ## 테스트
 테스트를 진행하여 올바르게 이미지가 변환되는지 확인합니다.
