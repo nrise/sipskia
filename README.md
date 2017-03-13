@@ -1,5 +1,5 @@
 # 개요
-SIPSkia(Simple Image Processing by Skia) 는 Skia 기반의 간단한 이미지
+SIPSkia(Simple Image Processing by Skia) 는 [Skia](https://skia.org/) 기반의 간단한 이미지
 resize, crop 을 수행하는 파이썬 라이브러리입니다. 모씨 앱의 카드
 이미지 변환에 사용되고 있습니다. 현재는 OSX Sierra 와 Ubuntu 14.04 에서
 테스트 되었습니다.
@@ -13,7 +13,8 @@ CPU 사용률을 보입니다. 본 개발 작업을 진행하며 느낀 Skia 의
 어디까지나 참고용으로 사용해 주시기 바랍니다.
 
 # 얼마나 빠른가?
-Skia chrome/m52 브랜치와 ImageMagick + Wand 3.x 때에는 5 ~ 6 배 이상의
+Skia chrome/m52 브랜치와 [ImageMagick](https://www.imagemagick.org/) +
+[Wand](http://docs.wand-py.org/en/0.4.4/) 3.x 때에는 5 ~ 6 배 이상의
 성능 차이가 있었습니다만, chrome/m58 과 ImageMagick + Wand 4.x 기준으로
 약 1.8 ~ 2배 정도의 성능 차리를 보입니다.
 
@@ -24,7 +25,7 @@ Skia 의 성능은 기존과 큰 차이가 없습니다만 ImageMagick, Wand 의
 ## 의존성
 sipskia 는 다음 버전에서 테스트 되었습니다. 아래 설치 방법이나 테스트 방법 모두
 해당 버전을 기준으로 설명합니다.
-* boost 1.63.0
+* [boost](http://www.boost.org/) 1.63.0
 * skia chrome/m58
 
 # 준비
@@ -44,7 +45,7 @@ $ cd skia
 $ python tools/git-sync-deps
 ```
 
-위와 같이 사전 준비를 진행한 후 gn/ninja 를 통해 Skia 를 Static Library
+위와 같이 사전 준비를 진행한 후 [ninja](https://ninja-build.org/) 를 통해 Skia 를 Static Library
 로 빌드합니다.
 ```bash
 $ bin/gn gen out/Static --args='is_official_build=true skia_enable_gpu=true skia_use_fontconfig=false cc="clang" cxx="clang++"'
