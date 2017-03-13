@@ -4,19 +4,19 @@ import os
 import sys
 from setuptools import setup, Extension
 
-module_name = 'sipskia'
-
+# 사용자 경로 설정 부분 시작
 skia_include_home_prefix = '/Users/moonsookim/skia'
 skia_lib_dir = '/Users/moonsookim/skia/out/Static'
 boost_python_include_dir = '/usr/local/include/'
 boost_python_lib_dir = '/usr/local/lib'
-
 if 'linux' in sys.platform:
-    skia_include_home_prefix = '/root/skia'
-    skia_lib_dir = '/root/skia/out/Release'
-    boost_python_include_dir = '/root/boost/include/'
-    boost_python_lib_dir = '/root/boost/lib'
+    skia_include_home_prefix = '/home/ubuntu/skia'
+    skia_lib_dir = '/home/ubuntu/skia/out/Release'
+    boost_python_include_dir = '/home/ubuntu/include/'
+    boost_python_lib_dir = '/home/ubuntu/boost/lib'
+# 사용자 경로 설정 부분 끝
 
+module_name = 'sipskia'
 
 if sys.platform == 'darwin':
     libraries = [
@@ -36,8 +36,6 @@ if sys.platform == 'darwin':
     extra_link_args = ['-framework', 'OpenGL', '-framework', 'QuartzCore', '-framework', 'Cocoa']
 else:
     extra_link_args = ['-lskia', '-lboost_python']
-    # extra_link_args.insert(0, '-Wl,--whole-archive')
-    # extra_link_args.append('-Wl,--no-whole-archive')
     libraries = []
 
 skia_includes = [
@@ -61,7 +59,6 @@ if sys.platform == 'darwin':
         '-Wall', '-Winit-self', '-Wpointer-arith', '-Wsign-compare',
         '-Wno-unused-parameter', '-std=c++11', '-stdlib=libc++',
         '-fvisibility-inlines-hidden', '-fno-threadsafe-statics',
-        # '-fno-rtti', '-fno-exceptions',
     ]
 elif 'linux' in sys.platform:
     cmd = [
@@ -70,7 +67,6 @@ elif 'linux' in sys.platform:
         '-Wsign-compare', '-Wno-unused-parameter', '-m64', '-Werror', '-O3',
         '-std=c++11', '-fexceptions', '-fno-threadsafe-statics',
         '-Wnon-virtual-dtor', '-Wno-unused-local-typedefs', '-Wno-return-type',
-        # '-fno-rtti',
     ]
 
 macros = [
@@ -131,6 +127,6 @@ module = Extension(module_name,
                    sources=['sipskia.cpp'])
 
 setup(name=module_name,
-      version='0.0.1',
+      version='0.0.2',
       description='This is a Simple Image Processing by Skia',
       ext_modules=[module])

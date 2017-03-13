@@ -1,62 +1,127 @@
 # 개요
-SIPSkia(Simple Image Processing by Skia) 는 Skia 기반의 간단한 이미지 resize, crop 을 수행하는
-파이썬 라이브러리입니다. 모씨 앱의 카드 이미지 변환에 사용되고 있습니다. 현재는 OSX 과 Ubuntu 14.04 만
-지원합니다.
+SIPSkia(Simple Image Processing by Skia) 는 Skia 기반의 간단한 이미지
+resize, crop 을 수행하는 파이썬 라이브러리입니다. 모씨 앱의 카드
+이미지 변환에 사용되고 있습니다. 현재는 OSX Sierra 와 Ubuntu 14.04 에서
+테스트 되었습니다.
 
 # 목적
-Skia 는 다른 이미지 처리 라이브러리와 비교하여 굉장히 빠른 성능과 낮은 CPU 사용률을 보입니다. 본 개발 작업을
-진행하며 느낀 Skia 의 성능과 작은 노하우를 다른 분들과 공유하기 위한 목적으로 코드를 공개 하였습니다.
+Skia 는 다른 이미지 처리 라이브러리와 비교하여 굉장히 빠른 성능과 낮은
+CPU 사용률을 보입니다. 본 개발 작업을 진행하며 느낀 Skia 의 성능과
+작은 노하우를 다른 분들과 공유하기 위한 목적으로 코드를 공개 하였습니다.
 
-그런 관계로 본 프로젝트는 별도의 추가 관리는 없습니다. 어디까지나 참고용으로 사용해 주시기 바랍니다.
+그런 관계로 본 프로젝트는 별도의 추가 관리는 없습니다.
+어디까지나 참고용으로 사용해 주시기 바랍니다.
+
+# 얼마나 빠른가?
+Skia chrome/m52 브랜치와 ImageMagick + Wand 3.x 때에는 5 ~ 6 배 이상의
+성능 차이가 있었습니다만, chrome/m58 과 ImageMagick + Wand 4.x 기준으로
+약 1.8 ~ 2배 정도의 성능 차리를 보입니다.
+
+Skia 의 성능은 기존과 큰 차이가 없습니다만 ImageMagick, Wand 의 성능이
+매우 좋아졌습니다.
 
 # 빌드 하기
-## Skia 빌드
-먼저 Skia 홈페이지에서 Skia 를 클론 받아서 설치합니다. 관련 내용은 Skia 홈페이지를 참고하시면 됩니다.<br />
-Ubuntu 에서 빌드할 경우 gyp 이전에 shared_library 옵션을 활성화 하여야 합니다.
+## 의존성
+sipskia 는 다음 버전에서 테스트 되었습니다. 아래 설치 방법이나 테스트 방법 모두
+해당 버전을 기준으로 설명합니다.
+* boost 1.63.0
+* skia chrome/m58
 
+# 준비
+## OSX
+### 1. boost-python 설치
+brew 를 이용하면 깔끔하게 설치할 수 있습니다.
 ```bash
-$ export GYP_DEFINES="skia_shared_lib=1"
-$ bin/sync_and_gyp
-...
+$ brew install boost-python
 ```
 
-Ubuntu 의 경우 Skia 빌드가 완료되면 out/Debug/ 하위에 lib/libskia.so 파일이 생성됩니다.<br />
-해당 파일을 LD_LIBRARY_PATH 중 한 곳에 복사합니다.
+### 2. Skia 빌드
+```bash
+$ git clone 'https://chromium.googlesource.com/chromium/tools/depot_tools.git'
+$ export PATH="${PWD}/depot_tools:${PATH}"
+$ git clone https://skia.googlesource.com/skia.git
+$ cd skia
+$ python tools/git-sync-deps
+```
 
-## boost-Python 설치
-또한 [boost-Python](http://www.boost.org//) 이 필요합니다. boost-python 을 설치합니다.<br />
-OSX 에서는 brew 를 이용하여 설치하는 것을 추천합니다. 굉장히 많은 시간과 귀찮음을 아낄 수 있습니다.<br />
-Skia 와 마찬가지로 Ubuntu 에서 빌드할 경우 -fPIC 옵션을 줄 수 있도록 해야 합니다.
+위와 같이 사전 준비를 진행한 후 gn/ninja 를 통해 Skia 를 Static Library
+로 빌드합니다.
+```bash
+$ bin/gn gen out/Static --args='is_official_build=true skia_enable_gpu=true skia_use_fontconfig=false cc="clang" cxx="clang++"'
+$ ninja -C out/Static
+```
 
+정상적으로 빌드가 완료되면 out/Static 디렉토리에 libskia.a 파일이 생성됩니다.
+
+## Ubuntu 14.04
+사용자 명을 ubuntu 로, 홈 디렉토리를 /home/ubuntu 로 가정합니다.
+
+### 1. boost-python 설치
+boost-python 을 홈페이지에서 다운로드 받습니다. 그 후 부트스트래핑을 해 줍니다.
+```bash
+$ ./bootstrap.sh --with-libraries=python --prefix=/home/ubuntu/boost/
+```
+
+빌드합니다.
 ```bash
 $ ./b2 cxxflags=-fPIC install
-...
 ```
+빌드가 성공적으로 완료되면 /home/ubuntu/boost/lib/ 에 libboost_python.a 와 libboost_python.so
+가 생기는데 libboost_python.so 파일을 모두 삭제합니다. 현재 빌드 중 so 파일을 참조해 버리는 문제가
+있습니다.
 
-## setup.py
-설치가 완료되면 setup.py 의 환경 설정 변수들을 변경한 후 다음 명령어로 라이브러리를 생성합니다.
-
+### 2. Skia 빌드
+Skia 를 클론 받고 설정하는 방법은 동일합니다.
 ```bash
-$ python setup.py build_ext --inplace
+$ git clone 'https://chromium.googlesource.com/chromium/tools/depot_tools.git'
+$ export PATH="${PWD}/depot_tools:${PATH}"
+$ git clone https://skia.googlesource.com/skia.git
+$ cd skia
+$ python tools/git-sync-deps
 ```
 
-# 테스트
-## 기본 테스트
+위와 같이 사전 준비를 진행한 후 gn/ninja 를 통해 Skia 를 Static Library
+로 빌드합니다. Skia 빌드는 OSX 과 거의 비슷하나 ninja 설정에 약간의 차이가 있습니다.
+```bash
+$ bin/gn gen out/Static --args='is_official_build=true skia_enable_gpu=false skia_use_fontconfig=false skia_use_system_expat=false skia_use_system_freetype2=false skia_use_system_icu=false skia_use_system_libjpeg_turbo=false skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_zlib=false'
+$ ninja -C out/Static
+```
+
+정상적으로 빌드가 완료되면 out/Static 디렉토리에 libskia.a 파일이 생성됩니다.
+
+# sipskia
+## 빌드
+sipskia 를 클론 받은 후 setup.py 파일의 상단에 있는 사용자 경로 설정 부분을 알맞게 고쳐줍니다.
+```bash
+$ python setup.py build_ext
+```
+
+## 테스트
+테스트를 진행하여 올바르게 이미지가 변환되는지 확인합니다.
 ```bash
 $ python test.py convert
 ```
 
-output 디렉토리에 변환된 이미지가 저장 됩니다.
+output 디렉토리에 정상적으로 변환된 파일들이 생성되는지 확인합니다.
 
-## 벤치마크 테스트
-ImageMagick + Wand 와 비교하는 테스트를 확인할 수 있습니다.<br />
-먼저 http://docs.wand-py.org/ 를 참고하여 ImageMagick 과 Wand 를 설치해 주세요.
+이번엔 메모리 누수 테스트입니다.
+```bash
+$ python test.py leak
+```
+
+해당 프로세스가 돌고 있는 동안 프로세스 모니터링 툴을 띄워 메모리 점유율에 유의미한 변화가
+발생하는지를 확인합니다.
+
+## 벤치마크
+ImageMagick + Wand 와 주로 벤치마크 비교를 합니다. Wand 홈페이지에 가서
+운영체제에 맞는 Wand 를 설치합니다.
+
 ```bash
 $ python benchmark.py
-1.52228999138
-0.343165874481
 ```
-약 4 ~ 5 배 이상 빠른 성능을 보입니다.
+
+최신 버전을 기준으로 sipskia 는 ImageMagick + Wand 보다 이미지 리사이징, 크롭의 성능이
+약 80 ~ 100% 정도 빠릅니다.
 
 # 기타
 앞서 언급한 것 처럼 별도의 pull request 나 issue 는 처리 되지 않습니다. 자유롭게 사용해 주세요.<br />
