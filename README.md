@@ -9,17 +9,16 @@ Skia 는 다른 이미지 처리 라이브러리와 비교하여 굉장히 빠�
 CPU 사용률을 보입니다. 본 개발 작업을 진행하며 느낀 Skia 의 성능과
 작은 노하우를 다른 분들과 공유하기 위한 목적으로 코드를 공개 하였습니다.
 
-그런 관계로 본 프로젝트는 별도의 추가 관리는 없습니다.
-어디까지나 참고용으로 사용해 주시기 바랍니다.
+그런 관계로 본 프로젝트는 모씨 앱 서버 관리 이슈가 발생할 때 관리됩니다.
 
 # 얼마나 빠른가?
 Skia chrome/m52 브랜치와 [ImageMagick](https://www.imagemagick.org/) +
 [Wand](http://docs.wand-py.org/en/0.4.4/) 3.x 때에는 5 ~ 6 배 이상의
 성능 차이가 있었습니다만, chrome/m58 과 ImageMagick + Wand 4.x 기준으로
-약 1.8 ~ 2배 정도의 성능 차리를 보입니다.
+약 1.8 ~ 2배 정도의 성능 차이를 보입니다.
 
 Skia 의 성능은 기존과 큰 차이가 없습니다만 ImageMagick, Wand 의 성능이
-매우 좋아졌습니다.
+매우 좋아진 것으로 보입니다.
 
 # 빌드 하기
 ## 의존성
@@ -81,7 +80,7 @@ $ cd skia
 $ python tools/git-sync-deps
 ```
 
-위와 같이 사전 준비를 진행한 후 gn/ninja 를 통해 Skia 를 Static Library
+위와 같이 사전 준비를 진행한 후 ninja 를 통해 Skia 를 Static Library
 로 빌드합니다. Skia 빌드는 OSX 과 거의 비슷하나 ninja 설정에 약간의 차이가 있습니다.
 ```bash
 $ bin/gn gen out/Static --args='is_official_build=true skia_enable_gpu=false skia_use_fontconfig=false skia_use_system_expat=false skia_use_system_freetype2=false skia_use_system_icu=false skia_use_system_libjpeg_turbo=false skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_zlib=false'
