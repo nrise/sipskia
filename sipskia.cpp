@@ -36,7 +36,11 @@ boost::python::object convert_original(char* data, long size, bool is_gallery_ca
 	float width = 720.0f;
 	float height = 720.0f;
 	if(is_gallery_card){
-	height = 1120.0f;
+		height = 1120.0f;
+	}
+
+	if(bm.width() == (int)width && bm.height() == (int)height) {
+		return boost::python::object(boost::python::handle<>(PyString_FromStringAndSize(data, size)));
 	}
 
 	SkPaint paint;
