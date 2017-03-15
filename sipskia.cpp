@@ -23,7 +23,7 @@
 #endif
 
 
-boost::python::object convert_original(char* data, long size, bool is_gallery_card) {
+boost::python::object convert_webp(char* data, long size, bool is_gallery_card) {
 	SkBitmap bm;
 	sk_sp<SkData> skdata(SkData::MakeWithoutCopy((void*)data, size));
 	if(!data) return boost::python::object();
@@ -39,10 +39,6 @@ boost::python::object convert_original(char* data, long size, bool is_gallery_ca
 		height = 1120.0f;
 	}
 
-	if(bm.width() == (int)width && bm.height() == (int)height) {
-		return boost::python::object(boost::python::handle<>(PyString_FromStringAndSize(data, size)));
-	}
-
 	SkPaint paint;
 	paint.setAntiAlias(true);
 	paint.setStyle(SkPaint::kFill_Style);
@@ -52,6 +48,16 @@ boost::python::object convert_original(char* data, long size, bool is_gallery_ca
 	SkCanvas* canvas = surface->getCanvas();
 	canvas->drawBitmapRect(bm, SkRect::MakeLTRB(0, 0, width, height), SkRect::MakeXYWH(0.0f, 0.0f, width, height), &paint);
 	sk_sp<SkImage> img(surface->makeImageSnapshot());
+	if(!img) return boost::python::object();
+	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kWEBP, IMAGE_QUALITY));
+	if(!jpg) return boost::python::object();
+
+	return boost::python::object(boost::python::handle<>(PyString_FromStringAndSize((char*)jpg->data(), jpg->size())));
+}
+
+boost::python::object convert_original(char* data, long size) {
+	sk_sp<SkData> skdata(SkData::MakeWithoutCopy((void*)data, size));
+	sk_sp<SkImage> img(SkImage::MakeFromEncoded(skdata));
 	if(!img) return boost::python::object();
 	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kJPEG, IMAGE_QUALITY));
 	if(!jpg) return boost::python::object();
@@ -192,6 +198,7 @@ boost::python::object convert_thumbnail(char* data, long size) {
 using namespace boost::python;
 BOOST_PYTHON_MODULE(sipskia)
 {
+	def("convert_webp", &convert_webp);
 	def("convert_original", &convert_original);
 	def("convert_list", &convert_list);
 	def("convert_reply", &convert_reply);

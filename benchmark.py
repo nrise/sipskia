@@ -7,6 +7,8 @@ f = open('sample_like.jpg')
 s = f.read()
 f.close()
 
+ws = sipskia.convert_webp(s, len(s), True)
+
 
 def crop_image(image_data, size_crop):
     from_width, from_height = (image_data.width, image_data.height)
@@ -48,11 +50,11 @@ def test_wand():
 
 
 def test_skia():
-    result = sipskia.convert_original(s, len(s), False)
-    result = sipskia.convert_list(s, len(s))
-    result = sipskia.convert_reply(s, len(s))
-    result = sipskia.convert_medium(s, len(s))
-    result = sipskia.convert_thumbnail(s, len(s))
+    result = sipskia.convert_original(ws, len(ws))
+    result = sipskia.convert_list(ws, len(ws))
+    result = sipskia.convert_reply(ws, len(ws))
+    result = sipskia.convert_medium(ws, len(ws))
+    result = sipskia.convert_thumbnail(ws, len(ws))
     return result
 
 
