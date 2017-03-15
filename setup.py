@@ -11,8 +11,8 @@ boost_python_include_dir = '/usr/local/include/'
 boost_python_lib_dir = '/usr/local/lib'
 if 'linux' in sys.platform:
     skia_include_home_prefix = '/home/ubuntu/skia'
-    skia_lib_dir = '/home/ubuntu/skia/out/Release'
-    boost_python_include_dir = '/home/ubuntu/include/'
+    skia_lib_dir = '/home/ubuntu/skia/out/Static'
+    boost_python_include_dir = '/home/ubuntu/boost/include/'
     boost_python_lib_dir = '/home/ubuntu/boost/lib'
 # 사용자 경로 설정 부분 끝
 
