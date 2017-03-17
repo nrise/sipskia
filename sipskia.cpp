@@ -49,7 +49,7 @@ boost::python::object convert_webp(char* data, long size, bool is_gallery_card) 
 	canvas->drawBitmapRect(bm, SkRect::MakeLTRB(0, 0, width, height), SkRect::MakeXYWH(0.0f, 0.0f, width, height), &paint);
 	sk_sp<SkImage> img(surface->makeImageSnapshot());
 	if(!img) return boost::python::object();
-	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kWEBP, IMAGE_QUALITY));
+	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kWEBP, 100));
 	if(!jpg) return boost::python::object();
 
 	return boost::python::object(boost::python::handle<>(PyString_FromStringAndSize((char*)jpg->data(), jpg->size())));
