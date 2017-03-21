@@ -14,8 +14,6 @@
 #include <boost/python.hpp>
 #include <stdexcept>
 
-#define IMAGE_QUALITY 70
-
 #ifdef SIPSKIA_BGRA
 #define SIPSKIA_COLORTYPE kBGRA_8888_SkColorType
 #else
@@ -23,7 +21,7 @@
 #endif
 
 
-boost::python::object convert_webp(char* data, long size, bool is_gallery_card) {
+boost::python::object convert_webp(char* data, long size, bool is_gallery_card, int quality) {
 	SkBitmap bm;
 	sk_sp<SkData> skdata(SkData::MakeWithoutCopy((void*)data, size));
 	if(!data) return boost::python::object();
@@ -49,23 +47,23 @@ boost::python::object convert_webp(char* data, long size, bool is_gallery_card) 
 	canvas->drawBitmapRect(bm, SkRect::MakeLTRB(0, 0, width, height), SkRect::MakeXYWH(0.0f, 0.0f, width, height), &paint);
 	sk_sp<SkImage> img(surface->makeImageSnapshot());
 	if(!img) return boost::python::object();
-	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kWEBP, 100));
+	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kWEBP, quality));
 	if(!jpg) return boost::python::object();
 
 	return boost::python::object(boost::python::handle<>(PyString_FromStringAndSize((char*)jpg->data(), jpg->size())));
 }
 
-boost::python::object convert_original(char* data, long size) {
+boost::python::object convert_original(char* data, long size, int quality) {
 	sk_sp<SkData> skdata(SkData::MakeWithoutCopy((void*)data, size));
 	sk_sp<SkImage> img(SkImage::MakeFromEncoded(skdata));
 	if(!img) return boost::python::object();
-	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kJPEG, IMAGE_QUALITY));
+	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kJPEG, quality));
 	if(!jpg) return boost::python::object();
 
 	return boost::python::object(boost::python::handle<>(PyString_FromStringAndSize((char*)jpg->data(), jpg->size())));
 }
 
-boost::python::object convert_list(char* data, long size) {
+boost::python::object convert_list(char* data, long size, int quality) {
 	SkBitmap bm;
 	sk_sp<SkData> skdata(SkData::MakeWithoutCopy((void*)data, size));
 	if(!data) return boost::python::object();
@@ -90,13 +88,13 @@ boost::python::object convert_list(char* data, long size) {
 	canvas->drawBitmapRect(bm, SkRect::MakeLTRB(0, top, width, bottom), SkRect::MakeXYWH(0.0f, 0.0f, width, height), &paint);
 	sk_sp<SkImage> img(surface->makeImageSnapshot());
 	if(!img) return boost::python::object();
-	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kJPEG, IMAGE_QUALITY));
+	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kJPEG, quality));
 	if(!jpg) return boost::python::object();
 
 	return boost::python::object(boost::python::handle<>(PyString_FromStringAndSize((char*)jpg->data(), jpg->size())));
 }
 
-boost::python::object convert_reply(char* data, long size) {
+boost::python::object convert_reply(char* data, long size, int quality) {
 	SkBitmap bm;
 	sk_sp<SkData> skdata(SkData::MakeWithoutCopy((void*)data, size));
 	if(!data) return boost::python::object();
@@ -124,13 +122,13 @@ boost::python::object convert_reply(char* data, long size) {
 	canvas->drawBitmapRect(bm, SkRect::MakeLTRB(0, top, width, bottom), SkRect::MakeXYWH(0.0f, 0.0f, canvas_width, canvas_height), &paint);
 	sk_sp<SkImage> img(surface->makeImageSnapshot());
 	if(!img) return boost::python::object();
-	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kJPEG, IMAGE_QUALITY));
+	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kJPEG, quality));
 	if(!jpg) return boost::python::object();
 
 	return boost::python::object(boost::python::handle<>(PyString_FromStringAndSize((char*)jpg->data(), jpg->size())));
 }
 
-boost::python::object convert_medium(char* data, long size) {
+boost::python::object convert_medium(char* data, long size, int quality) {
 	SkBitmap bm;
 	sk_sp<SkData> skdata(SkData::MakeWithoutCopy((void*)data, size));
 	if(!data) return boost::python::object();
@@ -158,13 +156,13 @@ boost::python::object convert_medium(char* data, long size) {
 	canvas->drawBitmapRect(bm, SkRect::MakeLTRB(0, top, width, bottom), SkRect::MakeXYWH(0.0f, 0.0f, canvas_width, canvas_height), &paint);
 	sk_sp<SkImage> img(surface->makeImageSnapshot());
 	if(!img) return boost::python::object();
-	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kJPEG, IMAGE_QUALITY));
+	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kJPEG, quality));
 	if(!jpg) return boost::python::object();
 
 	return boost::python::object(boost::python::handle<>(PyString_FromStringAndSize((char*)jpg->data(), jpg->size())));
 }
 
-boost::python::object convert_thumbnail(char* data, long size) {
+boost::python::object convert_thumbnail(char* data, long size, int quality) {
 	SkBitmap bm;
 	sk_sp<SkData> skdata(SkData::MakeWithoutCopy((void*)data, size));
 	if(!data) return boost::python::object();
@@ -189,7 +187,7 @@ boost::python::object convert_thumbnail(char* data, long size) {
 	canvas->drawBitmapRect(bm, SkRect::MakeLTRB(0, top, origin_size, bottom), SkRect::MakeXYWH(0.0f, 0.0f, canvas_size, canvas_size), &paint);
 	sk_sp<SkImage> img(surface->makeImageSnapshot());
 	if(!img) return boost::python::object();
-	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kJPEG, IMAGE_QUALITY));
+	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kJPEG, quality));
 	if(!jpg) return boost::python::object();
 
 	return boost::python::object(boost::python::handle<>(PyString_FromStringAndSize((char*)jpg->data(), jpg->size())));
