@@ -26,14 +26,18 @@ else:
     libraries = [
         'boost_python', 'skia_codec', 'skia_codec_android', 'skia_core',
         'skia_effects', 'skia_images', 'skia_opts', 'skia_opts_avx',
-        'skia_opts_avx2', 'skia_opts_sse41', 'skia_opts_sse42', 'skia_opts_ssse3',
-        'skia_pdf', 'skia_ports', 'skia_sfnt', 'skia_skgpu', 'skia_skgputest',
-        'skia_svg', 'skia_utils', 'skia_views', 'skia_xml', 'skia_xps',
+        'skia_opts_avx2', 'skia_opts_sse41', 'skia_opts_sse42',
+        'skia_opts_ssse3', 'skia_pdf', 'skia_ports', 'skia_sfnt',
+        'skia_skgpu', 'skia_skgputest', 'skia_svg', 'skia_utils',
+        'skia_views', 'skia_xml', 'skia_xps',
     ]
 
 extra_link_args = []
 if sys.platform == 'darwin':
-    extra_link_args = ['-framework', 'OpenGL', '-framework', 'QuartzCore', '-framework', 'Cocoa']
+    extra_link_args = [
+                          '-framework', 'OpenGL', '-framework',
+                          'QuartzCore', '-framework', 'Cocoa',
+                      ]
 else:
     extra_link_args = ['-lskia', '-lboost_python']
     libraries = []
@@ -50,23 +54,26 @@ skia_includes = [
 include_dirs = [boost_python_include_dir, ]
 for mid_dir, suffix_dirs in skia_includes:
     for suffix in suffix_dirs:
-        include_dirs.append('{}/{}/{}'.format(skia_include_home_prefix, mid_dir, suffix))
+        include_dirs.append('{}/{}/{}'.format(
+            skia_include_home_prefix, mid_dir, suffix))
 
 if sys.platform == 'darwin':
     cmd = [
-        '-MMD', '-MF', 'sipskia.o.d', '-O3', '-gdwarf-2', '-fvisibility=hidden',
-        '-Werror', '-mmacosx-version-min=10.7', '-arch', 'x86_64', '-mssse3',
-        '-Wall', '-Winit-self', '-Wpointer-arith', '-Wsign-compare',
-        '-Wno-unused-parameter', '-std=c++11', '-stdlib=libc++',
-        '-fvisibility-inlines-hidden', '-fno-threadsafe-statics',
+        '-MMD', '-MF', 'sipskia.o.d', '-O3', '-gdwarf-2',
+        '-fvisibility=hidden', '-Werror', '-mmacosx-version-min=10.7',
+        '-arch', 'x86_64', '-mssse3', '-Wall', '-Winit-self',
+        '-Wpointer-arith', '-Wsign-compare', '-Wno-unused-parameter',
+        '-std=c++11', '-stdlib=libc++', '-fvisibility-inlines-hidden',
+        '-fno-threadsafe-statics',
     ]
 elif 'linux' in sys.platform:
     cmd = [
         '-fPIE', '-MMD', '-MF', 'sipskia.o.d', '-g', '-fno-exceptions',
-        '-fstrict-aliasing', '-Wall', '-Wextra', '-Winit-self', '-Wpointer-arith',
-        '-Wsign-compare', '-Wno-unused-parameter', '-m64', '-Werror', '-O3',
-        '-std=c++11', '-fexceptions', '-fno-threadsafe-statics',
-        '-Wnon-virtual-dtor', '-Wno-unused-local-typedefs', '-Wno-return-type',
+        '-fstrict-aliasing', '-Wall', '-Wextra', '-Winit-self',
+        '-Wpointer-arith', '-Wsign-compare', '-Wno-unused-parameter',
+        '-m64', '-Werror', '-O3', '-std=c++11', '-fexceptions',
+        '-fno-threadsafe-statics', '-Wnon-virtual-dtor',
+        '-Wno-unused-local-typedefs', '-Wno-return-type',
     ]
 
 macros = [
@@ -114,6 +121,7 @@ def customize_compiler(compiler):
     compiler.compiler_cxx[0] = os.environ['CXX']
     compiler.linker_so[0] = os.environ['CXX']
     return compiler
+
 
 distutils.sysconfig.customize_compiler = customize_compiler
 

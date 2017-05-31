@@ -23,10 +23,12 @@ def test_degradation():
             webpdata = sipskia.convert_webp(data, len(data), 0, quality)
             result_jpg = sipskia.convert_original(webpdata, len(webpdata), 100)
 
-            with open('{}{}_{}.webp'.format(directory, file_name, quality), 'w') as f:
+            with open('{}{}_{}.webp'.format(directory, file_name, quality),
+                      'w') as f:
                 f.write(webpdata)
 
-            with open('{}{}_{}.jpg'.format(directory, file_name, quality), 'w') as f:
+            with open('{}{}_{}.jpg'.format(directory, file_name, quality),
+                      'w') as f:
                 f.write(result_jpg)
 
 
@@ -38,7 +40,8 @@ def test_convert(io=True):
     for data, name in ((sample, 'sample'), (sample_like, 'sample_like')):
         if io:
             print 'convert_webp: {}.jpg...'.format(name)
-        webpdata = sipskia.convert_webp(data, len(data), name == 'sample_like', 85)
+        webpdata = sipskia.convert_webp(data, len(data),
+                                        name == 'sample_like', 85)
         if io:
             with open('{}{}.webp'.format(directory, name), 'w') as f:
                 f.write(webpdata)
@@ -79,6 +82,7 @@ def test_convert(io=True):
         if io:
             with open('{}{}_thumbnail.jpg'.format(directory, name), 'w') as f:
                 f.write(result)
+
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
