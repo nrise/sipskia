@@ -35,8 +35,9 @@ else:
 extra_link_args = []
 if sys.platform == 'darwin':
     extra_link_args = [
-                          '-framework', 'OpenGL', '-framework',
-                          'QuartzCore', '-framework', 'Cocoa',
+                          '-framework', 'OpenGL',
+                          '-framework', 'QuartzCore',
+                          '-framework', 'Cocoa',
                       ]
 else:
     extra_link_args = ['-lskia', '-lboost_python']
