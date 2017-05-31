@@ -61,7 +61,7 @@ for mid_dir, suffix_dirs in skia_includes:
 if sys.platform == 'darwin':
     cmd = [
         '-MMD', '-MF', 'sipskia.o.d', '-O3', '-gdwarf-2',
-        '-fvisibility=hidden', '-Werror', '-mmacosx-version-min=10.7',
+        '-Werror', '-mmacosx-version-min=10.7',
         '-arch', 'x86_64', '-mssse3', '-Wall', '-Winit-self',
         '-Wpointer-arith', '-Wsign-compare', '-Wno-unused-parameter',
         '-std=c++11', '-stdlib=libc++', '-fvisibility-inlines-hidden',
