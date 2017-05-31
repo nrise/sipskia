@@ -24,7 +24,9 @@ Skia 의 성능은 기존과 큰 차이가 없습니다만 ImageMagick, Wand 의
 ## 의존성
 sipskia 는 다음 버전에서 테스트 되었습니다. 아래 설치 방법이나 테스트 방법 모두
 해당 버전을 기준으로 설명합니다.
-* [boost](http://www.boost.org/) 1.63.0
+
+* Python 2.7
+* [boost](http://www.boost.org/) 1.63.0 이상
 * skia chrome/m58
 
 # 준비
