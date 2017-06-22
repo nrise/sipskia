@@ -1,8 +1,7 @@
 # 개요
 SIPSkia(Simple Image Processing by Skia) 는 [Skia](https://skia.org/) 기반의 간단한 이미지
 resize, crop 을 수행하는 파이썬 라이브러리입니다. 모씨 앱의 카드
-이미지 변환에 사용되고 있습니다. 현재는 OSX Sierra 와 Ubuntu 14.04 에서
-테스트 되었습니다.
+이미지 변환에 사용되고 있습니다. 현재는 macOS Sierra 에서 테스트 되었습니다.
 
 # 목적
 Skia 는 다른 이미지 처리 라이브러리와 비교하여 굉장히 빠른 성능과 낮은
@@ -25,19 +24,29 @@ Skia 의 성능은 기존과 큰 차이가 없습니다만 ImageMagick, Wand 의
 sipskia 는 다음 버전에서 테스트 되었습니다. 아래 설치 방법이나 테스트 방법 모두
 해당 버전을 기준으로 설명합니다.
 
-* Python 2.7
+* Python 3.5+
 * [boost](http://www.boost.org/) 1.63.0 이상
 * skia chrome/m58
 
+### Python2 미지원
+Python2 는 더 이상 지원하지 않습니다. python2 branch 에서 마지막 작업 현황을
+확인 가능합니다.
+
 # 준비
-## OSX
+## macOS
 ### 1. boost-python 설치
 brew 를 이용하면 깔끔하게 설치할 수 있습니다.
+만일 기존 boost-python 이 python3 를 지원하지 않게 설치되어 있다면 제거한 후
+새로 설치해야 합니다.
+
 ```bash
-$ brew install boost-python
+$ brew install boost-python --with-python3 --without-python
 ```
 
 ### 2. Skia 빌드
+현재 Skia 는 chrome/m58 버전을 기준으로 빌드합니다. 그 뒤의 버전은 Skia 자체가
+macOS 에서 빌드되지 않는 문제가 있는 것 같습니다.
+
 ```bash
 $ git clone 'https://chromium.googlesource.com/chromium/tools/depot_tools.git'
 $ export PATH="${PWD}/depot_tools:${PATH}"
@@ -56,6 +65,10 @@ $ ninja -C out/Static
 정상적으로 빌드가 완료되면 out/Static 디렉토리에 libskia.a 파일이 생성됩니다.
 
 ## Ubuntu 14.04
+**중요**
+현재 Ubuntu 에서 python3 의 sipskia 를 빌드, 테스트 하는 작업은 진행되지 않았습니다.
+추후 업데이트 예정입니다.
+
 사용자 명을 ubuntu 로, 홈 디렉토리를 /home/ubuntu 로 가정합니다.
 
 ### 1. boost-python 설치

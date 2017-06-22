@@ -20,11 +20,11 @@ module_name = 'sipskia'
 
 if sys.platform == 'darwin':
     libraries = [
-        'boost_python', 'skia',
+        'boost_python3', 'skia',
     ]
 else:
     libraries = [
-        'boost_python', 'skia_codec', 'skia_codec_android', 'skia_core',
+        'boost_python3', 'skia_codec', 'skia_codec_android', 'skia_core',
         'skia_effects', 'skia_images', 'skia_opts', 'skia_opts_avx',
         'skia_opts_avx2', 'skia_opts_sse41', 'skia_opts_sse42',
         'skia_opts_ssse3', 'skia_pdf', 'skia_ports', 'skia_sfnt',
@@ -40,7 +40,7 @@ if sys.platform == 'darwin':
                           '-framework', 'Cocoa',
                       ]
 else:
-    extra_link_args = ['-lskia', '-lboost_python']
+    extra_link_args = ['-lskia', '-lboost_python3']
     libraries = []
 
 skia_includes = [
@@ -61,7 +61,8 @@ for mid_dir, suffix_dirs in skia_includes:
 if sys.platform == 'darwin':
     cmd = [
         '-MMD', '-MF', 'sipskia.o.d', '-O3', '-gdwarf-2',
-        '-Werror', '-mmacosx-version-min=10.7',
+        '-mmacosx-version-min=10.7',
+        # '-Werror', '-mmacosx-version-min=10.7',
         '-arch', 'x86_64', '-mssse3', '-Wall', '-Winit-self',
         '-Wpointer-arith', '-Wsign-compare', '-Wno-unused-parameter',
         '-std=c++11', '-stdlib=libc++', '-fvisibility-inlines-hidden',
