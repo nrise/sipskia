@@ -14,7 +14,7 @@ def test_degradation():
     if not os.path.exists(directory):
         os.makedirs(directory)
 
-    for i in xrange(5):
+    for i in range(5):
         file_name = 'sample_degradation_{:03}'.format(i + 1)
         with open('./{}.jpg'.format(file_name), 'rb', buffering=0) as f:
             data = f.read()
@@ -39,47 +39,50 @@ def test_convert(io=True):
 
     for data, name in ((sample, 'sample'), (sample_like, 'sample_like')):
         if io:
-            print('convert_webp: {}.jpg...'.format(name))
-        webpdata = sipskia.convert_webp(data, len(data), name == 'sample_like', 85)
+            print(f'convert_webp: {name}.jpg...')
+        webpdata = sipskia.convert_webp(data,
+                                        len(data),
+                                        name == 'sample_like', 85)
         if io:
-            with open('{}{}.webp'.format(directory, name), 'wb', buffering=0) as f:
+            with open(f'{directory}{name}.webp', 'wb', buffering=0) as f:
                 f.write(webpdata)
 
         data_length = len(webpdata)
 
         if io:
-            print('convert_original: {}.jpg...'.format(name))
+            print(f'convert_original: {name}.jpg...')
         result = sipskia.convert_original(webpdata, data_length, 100)
         if io:
-            with open('{}{}_detail.jpg'.format(directory, name), 'wb', buffering=0) as f:
+            with open(f'{directory}{name}_detail.jpg', 'wb', buffering=0) as f:
                 f.write(result)
 
         if io:
-            print('convert_list: {}.jpg...'.format(name))
+            print(f'convert_list: {name}.jpg...')
         result = sipskia.convert_list(webpdata, data_length, 100)
         if io:
-            with open('{}{}_list.jpg'.format(directory, name), 'wb', buffering=0) as f:
+            with open(f'{directory}{name}_list.jpg', 'wb', buffering=0) as f:
                 f.write(result)
 
         if io:
-            print('convert_medium: {}.jpg...'.format(name))
+            print(f'convert_medium: {name}.jpg...')
         result = sipskia.convert_medium(webpdata, data_length, 100)
         if io:
-            with open('{}{}_medium.jpg'.format(directory, name), 'wb', buffering=0) as f:
+            with open(f'{directory}{name}_medium.jpg', 'wb', buffering=0) as f:
                 f.write(result)
 
         if io:
-            print('convert_reply: {}.jpg...'.format(name))
+            print(f'convert_reply: {name}.jpg...')
         result = sipskia.convert_reply(webpdata, data_length, 100)
         if io:
-            with open('{}{}_reply.jpg'.format(directory, name), 'wb', buffering=0) as f:
+            with open(f'{directory}{name}_reply.jpg', 'wb', buffering=0) as f:
                 f.write(result)
 
         if io:
-            print('convert_thumbnail: {}.jpg...'.format(name))
+            print(f'convert_thumbnail: {name}.jpg...')
         result = sipskia.convert_thumbnail(webpdata, data_length, 100)
         if io:
-            with open('{}{}_thumbnail.jpg'.format(directory, name), 'wb', buffering=0) as f:
+            with open(f'{directory}{name}_thumbnail.jpg',
+                      'wb', buffering=0) as f:
                 f.write(result)
 
 

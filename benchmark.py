@@ -1,4 +1,3 @@
-# -*- coding: utf-8 -*-
 import timeit
 import sipskia
 from wand.image import Image
@@ -58,5 +57,5 @@ def test_skia():
     return result
 
 
-print timeit.timeit(test_wand, number=10)
-print timeit.timeit(test_skia, number=10)
+print(timeit.timeit(test_wand, number=10))
+print(timeit.timeit(test_skia, number=10))
