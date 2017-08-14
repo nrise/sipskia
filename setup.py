@@ -70,12 +70,13 @@ if sys.platform == 'darwin':
     ]
 elif 'linux' in sys.platform:
     cmd = [
-        '-fPIE', '-MMD', '-MF', 'sipskia.o.d', '-g', '-fno-exceptions',
+        '-fPIC', '-MMD', '-MF', 'sipskia.o.d', '-g', '-fno-exceptions',
         '-fstrict-aliasing', '-Wall', '-Wextra', '-Winit-self',
         '-Wpointer-arith', '-Wsign-compare', '-Wno-unused-parameter',
         '-m64', '-Werror', '-O3', '-std=c++11', '-fexceptions',
         '-fno-threadsafe-statics', '-Wnon-virtual-dtor',
         '-Wno-unused-local-typedefs', '-Wno-return-type',
+        '-Wno-missing-field-initializers',
     ]
 
 macros = [
@@ -106,13 +107,8 @@ elif 'linux' in sys.platform:
         ('SIPSKIA_BGRA', None),
     ]
 
-if sys.platform == 'darwin':
-    os.environ.setdefault('CC', 'clang')
-    os.environ.setdefault('CXX', 'clang++')
-elif 'linux' in sys.platform:
-    os.environ.setdefault('CC', 'gcc')
-    os.environ.setdefault('CXX', 'g++')
-
+os.environ.setdefault('CC', 'clang')
+os.environ.setdefault('CXX', 'clang++')
 orig_customize_compiler = distutils.sysconfig.customize_compiler
 
 
