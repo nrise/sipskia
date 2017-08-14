@@ -65,9 +65,6 @@ $ ninja -C out/Static
 정상적으로 빌드가 완료되면 out/Static 디렉토리에 libskia.a 파일이 생성됩니다.
 
 ## Ubuntu 16.04
-현재 Ubuntu 에서 python3 의 sipskia 를 빌드, 테스트 하는 작업은 진행되지 않았습니다.
-추후 업데이트 예정입니다.
-
 사용자 명을 ubuntu 로, 홈 디렉토리를 /home/ubuntu 로 가정합니다.
 
 ### 1. 그래픽 라이브러리 설치
@@ -76,7 +73,10 @@ $ ninja -C out/Static
 $ sudo apt install libglu1-mesa-dev freeglut3-dev
 ```
 
-### 2. boost-python 설치
+### 2. python3 설치
+python3 최신 버전을 잘~ 설치하세요.
+
+### 3. boost-python 설치
 boost-python 을 홈페이지에서 다운로드 받습니다. 그 후 부트스트래핑을 해 줍니다.
 ```bash
 # python3 의 디렉토리를 잘 기입합니다.
@@ -104,10 +104,10 @@ $ ./b2 cxxflags=-fPIC install
 가 생기는데 libboost_python.so 파일을 모두 삭제합니다. 현재 빌드 중 so 파일을 참조해 버리는 문제가
 있습니다.
 
-### 3. LLVM 설치
+### 4. LLVM 설치
 최신 clang/lldb 를 설치합니다. 해당 문서를 참고하세요.
 
-### 4. Skia 빌드
+### 5. Skia 빌드
 Skia 를 클론 받고 설정하는 방법은 동일합니다.
 ```bash
 $ git clone 'https://chromium.googlesource.com/chromium/tools/depot_tools.git'
