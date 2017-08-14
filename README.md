@@ -64,17 +64,36 @@ $ ninja -C out/Static
 
 정상적으로 빌드가 완료되면 out/Static 디렉토리에 libskia.a 파일이 생성됩니다.
 
-## Ubuntu 14.04
-**중요**
+## Ubuntu 16.04
 현재 Ubuntu 에서 python3 의 sipskia 를 빌드, 테스트 하는 작업은 진행되지 않았습니다.
 추후 업데이트 예정입니다.
 
 사용자 명을 ubuntu 로, 홈 디렉토리를 /home/ubuntu 로 가정합니다.
 
-### 1. boost-python 설치
+### 1. 그래픽 라이브러리 설치
+그래픽 라이브러리를 설치합니다.
+```bash
+$ sudo apt install libglu1-mesa-dev freeglut3-dev
+```
+
+### 2. boost-python 설치
 boost-python 을 홈페이지에서 다운로드 받습니다. 그 후 부트스트래핑을 해 줍니다.
 ```bash
-$ ./bootstrap.sh --with-libraries=python --prefix=/home/ubuntu/boost/
+# python3 의 디렉토리를 잘 기입합니다.
+$ ./bootstrap.sh --with-libraries=python --with-python=/usr/bin/python3.6 \
+	--with-python-version=3.6 --with-python-root=/usr/local/lib/python3.6 --prefix=/home/ubuntu/boost
+```
+
+부트스트랩이 완료된 후 project-config.jam 파일을 잘 수정해야(...) 합니다.
+```bash
+# project-config.jam 파일에 다음 내용이 포함되어야 합니다.
+import python ;
+if ! [ python.configured ]
+{
+	    using python : 3.6 : /usr/bin/python3.6 : /usr/include/python3.6m : /usr/lib/python3.6 ;
+}
+...
+libraries =  --with-python ;
 ```
 
 빌드합니다.
@@ -85,7 +104,10 @@ $ ./b2 cxxflags=-fPIC install
 가 생기는데 libboost_python.so 파일을 모두 삭제합니다. 현재 빌드 중 so 파일을 참조해 버리는 문제가
 있습니다.
 
-### 2. Skia 빌드
+### 3. LLVM 설치
+최신 clang/lldb 를 설치합니다. 해당 문서를 참고하세요.
+
+### 4. Skia 빌드
 Skia 를 클론 받고 설정하는 방법은 동일합니다.
 ```bash
 $ git clone 'https://chromium.googlesource.com/chromium/tools/depot_tools.git'
@@ -98,7 +120,7 @@ $ python tools/git-sync-deps
 위와 같이 사전 준비를 진행한 후 ninja 를 통해 Skia 를 Static Library
 로 빌드합니다. Skia 빌드는 OSX 과 거의 비슷하나 ninja 설정에 약간의 차이가 있습니다.
 ```bash
-$ bin/gn gen out/Static --args='is_official_build=true skia_enable_gpu=false skia_use_fontconfig=false skia_use_system_expat=false skia_use_system_freetype2=false skia_use_system_icu=false skia_use_system_libjpeg_turbo=false skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_zlib=false'
+$ bin/gn gen out/Static --args='is_official_build=true skia_enable_gpu=false skia_use_fontconfig=false skia_use_system_expat=false skia_use_system_freetype2=false skia_use_system_icu=false skia_use_system_libjpeg_turbo=false skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_zlib=false cc="clang" cxx="clang++"'
 $ ninja -C out/Static
 ```
 
