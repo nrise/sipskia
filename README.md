@@ -1,7 +1,7 @@
 # 개요
-SIPSkia(Simple Image Processing by Skia) 는 [Skia](https://skia.org/) 기반의 간단한 이미지
-resize, crop 을 수행하는 파이썬 라이브러리입니다. 모씨 앱의 카드
-이미지 변환에 사용되고 있습니다. 현재는 macOS Sierra 에서 테스트 되었습니다.
+SIPSkia(Simple Image Processing by Skia) 는 [Skia](https://skia.org/)
+기반의 간단한 이미지 resize, crop 을 수행하는 파이썬 라이브러리입니다.
+각종 이미지 변환에 사용되고 있습니다.
 
 # 목적
 Skia 는 다른 이미지 처리 라이브러리와 비교하여 굉장히 빠른 성능과 낮은
@@ -19,12 +19,28 @@ Skia chrome/m52 브랜치와 [ImageMagick](https://www.imagemagick.org/) +
 Skia 의 성능은 기존과 큰 차이가 없습니다만 ImageMagick, Wand 의 성능이
 매우 좋아진 것으로 보입니다.
 
+# 테스트 환경
+sipskia 는 목적 상 매우 제한된 환경에서만 테스트 되었습니다.
+즉 다음 환경이 아닌 곳에서의 정상 동작을 보장하지 않습니다.
+
+## 공통
+* Skia chrome/m64 브랜치
+* python 3.6
+
+## macOS
+* macOS Sierra 이상
+* boost-python 1.64.0
+
+## ubuntu
+* ubuntu 16.04
+* boost-python 1.66.0
+
 # 빌드 하기
 ## 의존성
 sipskia 는 다음 버전에서 테스트 되었습니다. 아래 설치 방법이나 테스트 방법 모두
 해당 버전을 기준으로 설명합니다.
 
-* Python 3.5+
+* Python 3.6+
 * [boost](http://www.boost.org/) 1.63.0 이상
 * skia chrome/m64
 
@@ -139,29 +155,10 @@ $ python setup.py build_ext
 ## 테스트
 테스트를 진행하여 올바르게 이미지가 변환되는지 확인합니다.
 ```bash
-$ python test.py convert
+$ python test.py
 ```
 
 output 디렉토리에 정상적으로 변환된 파일들이 생성되는지 확인합니다.
-
-이번엔 메모리 누수 테스트입니다.
-```bash
-$ python test.py leak
-```
-
-해당 프로세스가 돌고 있는 동안 프로세스 모니터링 툴을 띄워 메모리 점유율에 유의미한 변화가
-발생하는지를 확인합니다.
-
-## 벤치마크
-ImageMagick + Wand 와 주로 벤치마크 비교를 합니다. Wand 홈페이지에 가서
-운영체제에 맞는 Wand 를 설치합니다.
-
-```bash
-$ python benchmark.py
-```
-
-최신 버전을 기준으로 sipskia 는 ImageMagick + Wand 보다 이미지 리사이징, 크롭의 성능이
-약 80 ~ 100% 정도 빠릅니다.
 
 # 기타
 앞서 언급한 것 처럼 별도의 pull request 나 issue 는 처리 되지 않습니다. 자유롭게 사용해 주세요.<br />
