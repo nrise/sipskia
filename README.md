@@ -70,7 +70,7 @@ $ ninja -C out/Static
 ### 1. 그래픽 라이브러리 설치
 그래픽 라이브러리를 설치합니다.
 ```bash
-$ sudo apt install libglu1-mesa-dev freeglut3-dev
+$ sudo apt-get install libglu1-mesa-dev freeglut3-dev
 ```
 
 ### 2. python3 설치
