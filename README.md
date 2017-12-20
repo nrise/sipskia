@@ -8,8 +8,6 @@ Skia 는 다른 이미지 처리 라이브러리와 비교하여 굉장히 빠�
 CPU 사용률을 보입니다. 본 개발 작업을 진행하며 느낀 Skia 의 성능과
 작은 노하우를 다른 분들과 공유하기 위한 목적으로 코드를 공개 하였습니다.
 
-그런 관계로 본 프로젝트는 모씨 앱 서버 관리 이슈가 발생할 때 관리됩니다.
-
 # 얼마나 빠른가?
 Skia chrome/m52 브랜치와 [ImageMagick](https://www.imagemagick.org/) +
 [Wand](http://docs.wand-py.org/en/0.4.4/) 3.x 때에는 5 ~ 6 배 이상의
