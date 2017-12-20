@@ -20,293 +20,115 @@
 #define SIPSKIA_COLORTYPE kN32_SkColorType
 #endif
 
-
-boost::python::object convert_webp(char* data, long size, bool is_gallery_card, int quality) {
-	SkBitmap bm;
-	sk_sp<SkData> skdata(SkData::MakeWithoutCopy((void*)data, size));
-	if(!data) return boost::python::object();
-	std::unique_ptr<SkImageGenerator> gen = SkImageGenerator::MakeFromEncoded(skdata);
-	if(!gen) return boost::python::object();
-
-	SkImageInfo bmInfo = gen->getInfo();
-	gen->tryGenerateBitmap(&bm, bmInfo, nullptr);
-
-	float width = 720.0f;
-	float height = 720.0f;
-	if(is_gallery_card){
-		height = 1120.0f;
-	}
-
-	SkPaint paint;
-	paint.setAntiAlias(true);
-	paint.setStyle(SkPaint::kFill_Style);
-	paint.setFilterQuality(kHigh_SkFilterQuality);
-
-	sk_sp<SkSurface> surface(SkSurface::MakeRaster(SkImageInfo::Make(width, height, SIPSKIA_COLORTYPE, kPremul_SkAlphaType, nullptr)).release());
-	SkCanvas* canvas = surface->getCanvas();
-	canvas->drawBitmapRect(bm, SkRect::MakeLTRB(0, 0, width, height), SkRect::MakeXYWH(0.0f, 0.0f, width, height), &paint);
-	sk_sp<SkImage> img(surface->makeImageSnapshot());
-	if(!img) return boost::python::object();
-	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kWEBP, quality));
-	if(!jpg) return boost::python::object();
-
-	return boost::python::object(boost::python::handle<>(PyBytes_FromStringAndSize((char*)jpg->data(), jpg->size())));
-}
-
-boost::python::object convert_original(char* data, long size, int quality) {
-	sk_sp<SkData> skdata(SkData::MakeWithoutCopy((void*)data, size));
-	sk_sp<SkImage> img(SkImage::MakeFromEncoded(skdata));
-	if(!img) return boost::python::object();
-	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kJPEG, quality));
-	if(!jpg) return boost::python::object();
-
-	return boost::python::object(boost::python::handle<>(PyBytes_FromStringAndSize((char*)jpg->data(), jpg->size())));
-}
-
-boost::python::object convert_list(char* data, long size, int quality) {
-	SkBitmap bm;
-	sk_sp<SkData> skdata(SkData::MakeWithoutCopy((void*)data, size));
-	if(!data) return boost::python::object();
-	std::unique_ptr<SkImageGenerator> gen = SkImageGenerator::MakeFromEncoded(skdata);
-	if(!gen) return boost::python::object();
-
-	SkImageInfo bmInfo = gen->getInfo();
-	gen->tryGenerateBitmap(&bm, bmInfo, nullptr);
-
-	float width = 720.0f;
-	float height = 472.0f;
-	float top = (float)bm.height() / 2.0f - height / 2.0f;
-	float bottom = top + height;
-
-	SkPaint paint;
-	paint.setAntiAlias(true);
-	paint.setStyle(SkPaint::kFill_Style);
-	paint.setFilterQuality(kHigh_SkFilterQuality);
-
-	sk_sp<SkSurface> surface(SkSurface::MakeRaster(SkImageInfo::Make(width, height, SIPSKIA_COLORTYPE, kPremul_SkAlphaType, nullptr)).release());
-	SkCanvas* canvas = surface->getCanvas();
-	canvas->drawBitmapRect(bm, SkRect::MakeLTRB(0, top, width, bottom), SkRect::MakeXYWH(0.0f, 0.0f, width, height), &paint);
-	sk_sp<SkImage> img(surface->makeImageSnapshot());
-	if(!img) return boost::python::object();
-	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kJPEG, quality));
-	if(!jpg) return boost::python::object();
-
-	return boost::python::object(boost::python::handle<>(PyBytes_FromStringAndSize((char*)jpg->data(), jpg->size())));
-}
-
-boost::python::object convert_reply(char* data, long size, int quality) {
-	SkBitmap bm;
-	sk_sp<SkData> skdata(SkData::MakeWithoutCopy((void*)data, size));
-	if(!data) return boost::python::object();
-	std::unique_ptr<SkImageGenerator> gen = SkImageGenerator::MakeFromEncoded(skdata);
-	if(!gen) return boost::python::object();
-
-	SkImageInfo bmInfo = gen->getInfo();
-	gen->tryGenerateBitmap(&bm, bmInfo, nullptr);
-
-	float width = 720.0f;
-	float height = 472.0f;
-	float top = (float)bm.height()/2.0f - height/2.0f;
-	float bottom = top + height;
-
-	float canvas_width = 460.0f;
-	float canvas_height = 310.0f;
-
-	SkPaint paint;
-	paint.setAntiAlias(true);
-	paint.setStyle(SkPaint::kFill_Style);
-	paint.setFilterQuality(kHigh_SkFilterQuality);
-
-	sk_sp<SkSurface> surface(SkSurface::MakeRaster(SkImageInfo::Make(canvas_width, canvas_height, SIPSKIA_COLORTYPE, kPremul_SkAlphaType, nullptr)).release());
-	SkCanvas* canvas = surface->getCanvas();
-	canvas->drawBitmapRect(bm, SkRect::MakeLTRB(0, top, width, bottom), SkRect::MakeXYWH(0.0f, 0.0f, canvas_width, canvas_height), &paint);
-	sk_sp<SkImage> img(surface->makeImageSnapshot());
-	if(!img) return boost::python::object();
-	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kJPEG, quality));
-	if(!jpg) return boost::python::object();
-
-	return boost::python::object(boost::python::handle<>(PyBytes_FromStringAndSize((char*)jpg->data(), jpg->size())));
-}
-
-boost::python::object convert_medium(char* data, long size, int quality) {
-	SkBitmap bm;
-	sk_sp<SkData> skdata(SkData::MakeWithoutCopy((void*)data, size));
-	if(!data) return boost::python::object();
-	std::unique_ptr<SkImageGenerator> gen = SkImageGenerator::MakeFromEncoded(skdata);
-	if(!gen) return boost::python::object();
-
-	SkImageInfo bmInfo = gen->getInfo();
-	gen->tryGenerateBitmap(&bm, bmInfo, nullptr);
-
-	float width = 720.0f;
-	float height = 720.0f;
-	float top = (float)bm.height()/2.0f - height/2.0f;
-	float bottom = top + height;
-
-	float canvas_width = 360.0f;
-	float canvas_height = 360.0f;
-
-	SkPaint paint;
-	paint.setAntiAlias(true);
-	paint.setStyle(SkPaint::kFill_Style);
-	paint.setFilterQuality(kHigh_SkFilterQuality);
-
-	sk_sp<SkSurface> surface(SkSurface::MakeRaster(SkImageInfo::Make(canvas_width, canvas_height, SIPSKIA_COLORTYPE, kPremul_SkAlphaType, nullptr)).release());
-	SkCanvas* canvas = surface->getCanvas();
-	canvas->drawBitmapRect(bm, SkRect::MakeLTRB(0, top, width, bottom), SkRect::MakeXYWH(0.0f, 0.0f, canvas_width, canvas_height), &paint);
-	sk_sp<SkImage> img(surface->makeImageSnapshot());
-	if(!img) return boost::python::object();
-	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kJPEG, quality));
-	if(!jpg) return boost::python::object();
-
-	return boost::python::object(boost::python::handle<>(PyBytes_FromStringAndSize((char*)jpg->data(), jpg->size())));
-}
-
-boost::python::object convert_thumbnail(char* data, long size, int quality) {
-	SkBitmap bm;
-	sk_sp<SkData> skdata(SkData::MakeWithoutCopy((void*)data, size));
-	if(!data) return boost::python::object();
-	std::unique_ptr<SkImageGenerator> gen = SkImageGenerator::MakeFromEncoded(skdata);
-	if(!gen) return boost::python::object();
-
-	SkImageInfo bmInfo = gen->getInfo();
-	gen->tryGenerateBitmap(&bm, bmInfo, nullptr);
-
-	SkPaint paint;
-	paint.setAntiAlias(true);
-	paint.setStyle(SkPaint::kFill_Style);
-	paint.setFilterQuality(kHigh_SkFilterQuality);
-
-	float canvas_size = 132.0f;
-	float origin_size = 720.0f;
-	float top = bm.height() / 2.0f - origin_size / 2.0f;
-	float bottom = top + origin_size;
-
-	sk_sp<SkSurface> surface(SkSurface::MakeRaster(SkImageInfo::Make(canvas_size, canvas_size, SIPSKIA_COLORTYPE, kPremul_SkAlphaType, nullptr)).release());
-	SkCanvas* canvas = surface->getCanvas();
-	canvas->drawBitmapRect(bm, SkRect::MakeLTRB(0, top, origin_size, bottom), SkRect::MakeXYWH(0.0f, 0.0f, canvas_size, canvas_size), &paint);
-	sk_sp<SkImage> img(surface->makeImageSnapshot());
-	if(!img) return boost::python::object();
-	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kJPEG, quality));
-	if(!jpg) return boost::python::object();
-
-	return boost::python::object(boost::python::handle<>(PyBytes_FromStringAndSize((char*)jpg->data(), jpg->size())));
-}
-
-boost::python::object new_convert_webp(PyObject* raw, int quality) {
+boost::python::object convert_webp(PyObject* raw, long canvasSize, int quality) {
 	int size =  Py_SIZE(raw);
 	void* data = (void*)PyBytes_AsString(raw);
 
-	SkBitmap bm;
 	sk_sp<SkData> skdata(SkData::MakeWithoutCopy(data, size));
 	if(!data) return boost::python::object();
-	std::unique_ptr<SkImageGenerator> gen = SkImageGenerator::MakeFromEncoded(skdata);
-	if(!gen) return boost::python::object();
-
-	SkImageInfo bmInfo = gen->getInfo();
-	gen->tryGenerateBitmap(&bm, bmInfo, nullptr);
+	sk_sp<SkImage> image = SkImage::MakeFromEncoded(skdata);
+	if(!image) return boost::python::object();
 
 	SkPaint paint;
 	paint.setAntiAlias(true);
 	paint.setStyle(SkPaint::kFill_Style);
 	paint.setFilterQuality(kHigh_SkFilterQuality);
 
-	float canvas_size = 1800.0f;
 	float left = 0.0f;
 	float right = 0.0f;
 	float top = 0.0f;
 	float bottom = 0.0f;
-	if(bm.width() > bm.height()) {
+
+	int imageWidth = image->width();
+	int imageHeight = image->height();
+
+	if(imageWidth > imageHeight) {
 		top = 0.0f;
-		bottom = bm.height();
-		left = (bm.width() - bm.height())/2.0f;
-		right = left + bm.height();
+		bottom = imageHeight;
+		left = (imageWidth - imageHeight)/2.0f;
+		right = left + imageHeight;
 	}else{
 		left = 0.0f;
-		right = bm.width();
-		top = (bm.height() - bm.width())/2.0f;
-		bottom = top + bm.width();
+		right = imageWidth;
+		top = (imageHeight - imageWidth)/2.0f;
+		bottom = top + imageWidth;
 	}
 
-	sk_sp<SkSurface> surface(SkSurface::MakeRaster(SkImageInfo::Make(canvas_size, canvas_size, SIPSKIA_COLORTYPE, kPremul_SkAlphaType, nullptr)).release());
+	sk_sp<SkSurface> surface(SkSurface::MakeRaster(SkImageInfo::Make(canvasSize, canvasSize, SIPSKIA_COLORTYPE, kPremul_SkAlphaType, nullptr)).release());
 	SkCanvas* canvas = surface->getCanvas();
-	canvas->drawBitmapRect(bm, SkRect::MakeLTRB(left, top, right, bottom), SkRect::MakeXYWH(0.0f, 0.0f, canvas_size, canvas_size), &paint);
+	
+	canvas->drawImageRect(image, SkRect::MakeLTRB(left, top, right, bottom), SkRect::MakeXYWH(0.0f, 0.0f, canvasSize, canvasSize), &paint);
 	sk_sp<SkImage> img(surface->makeImageSnapshot());
-	if(!img) return boost::python::object();
-	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kWEBP, quality));
-	if(!jpg) return boost::python::object();
 
-	return boost::python::object(boost::python::handle<>(PyBytes_FromStringAndSize((char*)jpg->data(), jpg->size())));
+	if(!img) return boost::python::object();
+	sk_sp<SkData> webp(img->encodeToData(SkEncodedImageFormat::kWEBP, quality));
+	if(!webp) return boost::python::object();
+
+	return boost::python::object(boost::python::handle<>(PyBytes_FromStringAndSize((char*)webp->data(), webp->size())));
 }
 
-boost::python::object new_convert_jpg(PyObject* raw, long convert_size, int quality) {
+boost::python::object convert_jpg(PyObject* raw, long canvasSize, int quality) {
 	int size =  Py_SIZE(raw);
 	void* data = (void*)PyBytes_AsString(raw);
 
-	SkBitmap bm;
+	// SkBitmap bm;
 	sk_sp<SkData> skdata(SkData::MakeWithoutCopy(data, size));
 	if(!data) return boost::python::object();
-	std::unique_ptr<SkImageGenerator> gen = SkImageGenerator::MakeFromEncoded(skdata);
-	if(!gen) return boost::python::object();
-
-	SkImageInfo bmInfo = gen->getInfo();
-	gen->tryGenerateBitmap(&bm, bmInfo, nullptr);
+	sk_sp<SkImage> image = SkImage::MakeFromEncoded(skdata);
+	if(!image) return boost::python::object();
 
 	SkPaint paint;
 	paint.setAntiAlias(true);
 	paint.setStyle(SkPaint::kFill_Style);
 	paint.setFilterQuality(kHigh_SkFilterQuality);
 
-    long convert_height = (long)((bm.height() * convert_size) / bm.width());
-    if(convert_height < 1){
-        convert_height = 1;
+    long canvasHeight = (long)((image->height() * canvasSize) / image->width());
+    if(canvasHeight < 1){
+        canvasHeight = 1;
     }
 
-	sk_sp<SkSurface> surface(SkSurface::MakeRaster(SkImageInfo::Make(convert_size, convert_height, SIPSKIA_COLORTYPE, kPremul_SkAlphaType, nullptr)).release());
+	sk_sp<SkSurface> surface(SkSurface::MakeRaster(SkImageInfo::Make(canvasSize, canvasHeight, SIPSKIA_COLORTYPE, kPremul_SkAlphaType, nullptr)).release());
 	SkCanvas* canvas = surface->getCanvas();
-	canvas->drawBitmapRect(bm, SkRect::MakeLTRB(0.0f, 0.0f, bm.width(), bm.height()), SkRect::MakeXYWH(0.0f, 0.0f, convert_size, convert_height), &paint);
+	canvas->drawImageRect(image, SkRect::MakeLTRB(0.0f, 0.0f, image->width(), image->height()), SkRect::MakeXYWH(0.0f, 0.0f, canvasSize, canvasHeight), &paint);
 	sk_sp<SkImage> img(surface->makeImageSnapshot());
 	if(!img) return boost::python::object();
-	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kJPEG, quality));
+	sk_sp<SkData> jpg(img->encodeToData(SkEncodedImageFormat::kJPEG, quality));
 	if(!jpg) return boost::python::object();
 
 	return boost::python::object(boost::python::handle<>(PyBytes_FromStringAndSize((char*)jpg->data(), jpg->size())));
 }
 
-boost::python::object new_convert_origin_webp(PyObject* raw, int quality) {
+boost::python::object convert_origin_webp(PyObject* raw, int quality) {
 	int size =  Py_SIZE(raw);
 	void* data = (void*)PyBytes_AsString(raw);
 
-	SkBitmap bm;
 	sk_sp<SkData> skdata(SkData::MakeWithoutCopy(data, size));
 	if(!data) return boost::python::object();
-	std::unique_ptr<SkImageGenerator> gen = SkImageGenerator::MakeFromEncoded(skdata);
-	if(!gen) return boost::python::object();
-
-	SkImageInfo bmInfo = gen->getInfo();
-	gen->tryGenerateBitmap(&bm, bmInfo, nullptr);
+	sk_sp<SkImage> image = SkImage::MakeFromEncoded(skdata);
+	if(!image) return boost::python::object();
 
 	SkPaint paint;
 	paint.setAntiAlias(true);
 	paint.setStyle(SkPaint::kFill_Style);
 	paint.setFilterQuality(kHigh_SkFilterQuality);
 
-	float canvas_height = bm.height();
-	float canvas_width = bm.width();
+	float canvasWidth = image->width();
+	float canvasHeight = image->height();
+	
 	float left = 0.0f;
-	float right = bm.width();
+	float right = canvasWidth;
 	float top = 0.0f;
-	float bottom = bm.height();
+	float bottom = canvasHeight;
 
-	sk_sp<SkSurface> surface(SkSurface::MakeRaster(SkImageInfo::Make(canvas_width, canvas_height, SIPSKIA_COLORTYPE, kPremul_SkAlphaType, nullptr)).release());
+	sk_sp<SkSurface> surface(SkSurface::MakeRaster(SkImageInfo::Make(canvasWidth, canvasHeight, SIPSKIA_COLORTYPE, kPremul_SkAlphaType, nullptr)).release());
 	SkCanvas* canvas = surface->getCanvas();
-	canvas->drawBitmapRect(bm, SkRect::MakeLTRB(left, top, right, bottom), SkRect::MakeXYWH(0.0f, 0.0f, canvas_width, canvas_height), &paint);
+	canvas->drawImageRect(image, SkRect::MakeLTRB(left, top, right, bottom), SkRect::MakeXYWH(0.0f, 0.0f, canvasWidth, canvasHeight), &paint);
 	sk_sp<SkImage> img(surface->makeImageSnapshot());
 	if(!img) return boost::python::object();
-	sk_sp<SkData> jpg(img->encode(SkEncodedImageFormat::kWEBP, quality));
-	if(!jpg) return boost::python::object();
+	sk_sp<SkData> webp(img->encodeToData(SkEncodedImageFormat::kWEBP, quality));
+	if(!webp) return boost::python::object();
 
-	return boost::python::object(boost::python::handle<>(PyBytes_FromStringAndSize((char*)jpg->data(), jpg->size())));
+	return boost::python::object(boost::python::handle<>(PyBytes_FromStringAndSize((char*)webp->data(), webp->size())));
 }
 
 
@@ -314,13 +136,7 @@ using namespace boost::python;
 BOOST_PYTHON_MODULE(sipskia)
 {
 	def("convert_webp", &convert_webp);
-	def("convert_original", &convert_original);
-	def("convert_list", &convert_list);
-	def("convert_reply", &convert_reply);
-	def("convert_medium", &convert_medium);
-	def("convert_thumbnail", &convert_thumbnail);
-	def("new_convert_webp", &new_convert_webp);
-	def("new_convert_jpg", &new_convert_jpg);
-	def("new_convert_origin_webp", &new_convert_origin_webp);
+	def("convert_jpg", &convert_jpg);
+	def("convert_origin_webp", &convert_origin_webp);
 }
 

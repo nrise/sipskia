@@ -26,7 +26,7 @@ sipskia 는 다음 버전에서 테스트 되었습니다. 아래 설치 방법�
 
 * Python 3.5+
 * [boost](http://www.boost.org/) 1.63.0 이상
-* skia chrome/m58
+* skia chrome/m64
 
 ### Python2 미지원
 Python2 는 더 이상 지원하지 않습니다. python2 branch 에서 마지막 작업 현황을
@@ -58,7 +58,7 @@ $ python tools/git-sync-deps
 위와 같이 사전 준비를 진행한 후 [ninja](https://ninja-build.org/) 를 통해 Skia 를 Static Library
 로 빌드합니다.
 ```bash
-$ bin/gn gen out/Static --args='is_official_build=true skia_enable_gpu=true skia_use_fontconfig=false cc="clang" cxx="clang++"'
+$ bin/gn gen out/Static --args='is_official_build=true skia_enable_gpu=true skia_use_fontconfig=false skia_use_system_expat=false skia_use_system_icu=false skia_use_system_libjpeg_turbo=false skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_zlib=false cc="clang" cxx="clang++"'
 $ ninja -C out/Static
 ```
 
