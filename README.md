@@ -58,9 +58,6 @@ $ brew install boost-python --with-python3 --without-python
 ```
 
 ### 2. Skia 빌드
-현재 Skia 는 chrome/m58 버전을 기준으로 빌드합니다. 그 뒤의 버전은 Skia 자체가
-macOS 에서 빌드되지 않는 문제가 있는 것 같습니다.
-
 ```bash
 $ git clone 'https://chromium.googlesource.com/chromium/tools/depot_tools.git'
 $ export PATH="${PWD}/depot_tools:${PATH}"
