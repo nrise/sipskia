@@ -24,6 +24,7 @@ sipskia 는 목적 상 매우 제한된 환경에서만 테스트 되었습니�
 ## 공통
 * Skia chrome/m64 브랜치
 * python 3.6
+* clang++ 최신버전
 
 ## macOS
 * macOS Sierra 이상
