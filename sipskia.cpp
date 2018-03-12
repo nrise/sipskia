@@ -131,7 +131,40 @@ boost::python::object convert_origin_webp(PyObject* raw, int quality) {
 	return boost::python::object(boost::python::handle<>(PyBytes_FromStringAndSize((char*)webp->data(), webp->size())));
 }
 
-boost::python::object convert_with_crop_webp(PyObject* raw, long cropWidth, long cropHeight, long canvasWidth, long canvasHeight, int quality) {
+boost::python::object convert_origin_jpg(PyObject* raw, int quality) {
+	int size =  Py_SIZE(raw);
+	void* data = (void*)PyBytes_AsString(raw);
+
+	sk_sp<SkData> skdata(SkData::MakeWithoutCopy(data, size));
+	if(!data) return boost::python::object();
+	sk_sp<SkImage> image = SkImage::MakeFromEncoded(skdata);
+	if(!image) return boost::python::object();
+
+	SkPaint paint;
+	paint.setAntiAlias(true);
+	paint.setStyle(SkPaint::kFill_Style);
+	paint.setFilterQuality(kHigh_SkFilterQuality);
+
+	float canvasWidth = image->width();
+	float canvasHeight = image->height();
+
+	float left = 0.0f;
+	float right = canvasWidth;
+	float top = 0.0f;
+	float bottom = canvasHeight;
+
+	sk_sp<SkSurface> surface(SkSurface::MakeRaster(SkImageInfo::Make(canvasWidth, canvasHeight, SIPSKIA_COLORTYPE, kPremul_SkAlphaType, nullptr)).release());
+	SkCanvas* canvas = surface->getCanvas();
+	canvas->drawImageRect(image, SkRect::MakeLTRB(left, top, right, bottom), SkRect::MakeXYWH(0.0f, 0.0f, canvasWidth, canvasHeight), &paint);
+	sk_sp<SkImage> img(surface->makeImageSnapshot());
+	if(!img) return boost::python::object();
+	sk_sp<SkData> webp(img->encodeToData(SkEncodedImageFormat::kJPEG, quality));
+	if(!webp) return boost::python::object();
+
+	return boost::python::object(boost::python::handle<>(PyBytes_FromStringAndSize((char*)webp->data(), webp->size())));
+}
+
+boost::python::object convert_with_crop_jpg(PyObject* raw, long cropWidth, long cropHeight, long canvasWidth, long canvasHeight, int quality) {
 	int size =  Py_SIZE(raw);
 	void* data = (void*)PyBytes_AsString(raw);
 
@@ -155,7 +188,7 @@ boost::python::object convert_with_crop_webp(PyObject* raw, long cropWidth, long
 	canvas->drawImageRect(image, SkRect::MakeLTRB(0, top, width, bottom), SkRect::MakeXYWH(0.0f, 0.0f, canvasWidth, canvasHeight), &paint);
 	sk_sp<SkImage> img(surface->makeImageSnapshot());
 	if(!img) return boost::python::object();
-	sk_sp<SkData> webp(img->encodeToData(SkEncodedImageFormat::kWEBP, quality));
+	sk_sp<SkData> webp(img->encodeToData(SkEncodedImageFormat::kJPEG, quality));
 	if(!webp) return boost::python::object();
 
 	return boost::python::object(boost::python::handle<>(PyBytes_FromStringAndSize((char*)webp->data(), webp->size())));
@@ -168,6 +201,7 @@ BOOST_PYTHON_MODULE(sipskia)
 	def("convert_webp", &convert_webp);
 	def("convert_jpg", &convert_jpg);
 	def("convert_origin_webp", &convert_origin_webp);
-	def("convert_with_crop_webp", &convert_with_crop_webp);
+	def("convert_origin_jpg", &convert_origin_jpg);
+	def("convert_with_crop_jpg", &convert_with_crop_jpg);
 }
 

@@ -59,16 +59,16 @@ def test():
                 f.write(webpdata)
 
             print(f'\t\tcrop list jpg to webp')
-            webpdata = sipskia.convert_with_crop_webp(data, 720, 472, 720, 472, quality)
+            webpdata = sipskia.convert_with_crop_jpg(data, 720, 472, 720, 472, quality)
             with open(
-                    f'{directory}{file_name}_crop_720_472_{quality}.webp',
+                    f'{directory}{file_name}_crop_720_472_{quality}.jpg',
                     'wb', buffering=0) as f:
                 f.write(webpdata)
 
             print(f'\t\tcrop list jpg to webp')
-            webpdata = sipskia.convert_with_crop_webp(data, 720, 472, 460, 310, quality)
+            webpdata = sipskia.convert_with_crop_jpg(data, 720, 472, 460, 310, quality)
             with open(
-                    f'{directory}{file_name}_crop_460_310_{quality}.webp',
+                    f'{directory}{file_name}_crop_460_310_{quality}.jpg',
                     'wb', buffering=0) as f:
                 f.write(webpdata)
 
