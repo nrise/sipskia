@@ -1,12 +1,11 @@
-# -*- coding: utf-8 -*-
 import distutils.sysconfig
 import os
 import sys
 from setuptools import setup, Extension
 
 # 사용자 경로 설정 부분 시작
-skia_include_home_prefix = '/Users/moonsookim/skia'
-skia_lib_dir = '/Users/moonsookim/skia/out/Static'
+skia_include_home_prefix = '/Users/ryukyoungmook/skia'
+skia_lib_dir = '/Users/ryukyoungmook/skia/out/Static'
 boost_python_include_dir = '/usr/local/include/'
 boost_python_lib_dir = '/usr/local/lib'
 if 'linux' in sys.platform:

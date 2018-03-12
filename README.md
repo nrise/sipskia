@@ -41,7 +41,7 @@ sipskia 는 다음 버전에서 테스트 되었습니다. 아래 설치 방법�
 
 * Python 3.6+
 * [boost](http://www.boost.org/) 1.63.0 이상
-* skia chrome/m64
+* skia chrome/m66
 
 ### Python2 미지원
 Python2 는 더 이상 지원하지 않습니다. python2 branch 에서 마지막 작업 현황을
