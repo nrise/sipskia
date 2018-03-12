@@ -22,7 +22,7 @@ sipskia 는 목적 상 매우 제한된 환경에서만 테스트 되었습니�
 즉 다음 환경이 아닌 곳에서의 정상 동작을 보장하지 않습니다.
 
 ## 공통
-* Skia chrome/m64 브랜치
+* Skia chrome/m66 브랜치
 * python 3.6
 * clang++ 최신버전
 
