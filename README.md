@@ -49,13 +49,12 @@ Python2 는 더 이상 지원하지 않습니다. python2 branch 에서 마지�
 
 # 준비
 ## macOS
-### 1. boost-python 설치
+### 1. boost-python3 설치
 brew 를 이용하면 깔끔하게 설치할 수 있습니다.
-만일 기존 boost-python 이 python3 를 지원하지 않게 설치되어 있다면 제거한 후
-새로 설치해야 합니다.
+기존의 boos-python은 python2, python3를 모두 지원했으나 업데이트 되면서 python3를 지원하는 별도의 boot-python3가 생겼습니다.
 
 ```bash
-$ brew install boost-python --with-python3 --without-python
+$ brew install boost-python3
 ```
 
 ### 2. Skia 빌드
@@ -71,6 +70,12 @@ $ python tools/git-sync-deps
 로 빌드합니다.
 ```bash
 $ bin/gn gen out/Static --args='is_official_build=true skia_enable_gpu=true skia_use_fontconfig=false skia_use_system_expat=false skia_use_system_icu=false skia_use_system_libjpeg_turbo=false skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_zlib=false cc="clang" cxx="clang++"'
+$ ninja -C out/Static
+```
+
+현재 사용중인 맥의 C++의 버전 차이에 의해 오류가 발생하는 경우(-Wreturn-std-move-in-c++11), out/Static 폴더를 삭제한 후 다음의 커맨드를 통해 빌드를 실행합니다.
+``` bash
+$ bin/gn gen out/Static --args='is_official_build=true skia_enable_gpu=true skia_use_fontconfig=false skia_use_system_expat=false skia_use_system_icu=false skia_use_system_libjpeg_turbo=false skia_use_system_libpng=false skia_use_system_libwebp=false skia_use_system_zlib=false cc="clang -Wno-return-std-move-in-c++11" cxx="clang++ -Wno-return-std-move-in-c++11"'
 $ ninja -C out/Static
 ```
 
@@ -140,7 +145,12 @@ $ ninja -C out/Static
 
 # sipskia
 ## 빌드
-sipskia 를 클론 받은 후 setup.py 파일의 상단에 있는 사용자 경로 설정 부분을 알맞게 고쳐줍니다.
+setup.py에서 두가지 부분을 반드시 수정해주어야 합니다.
+* 사용자 경로 (현재 환경에 맞게)
+	* skia_include_home_prefix
+	* skia_lib_dir
+* ln: 22의 boost_python -> boost_python37
+
 그 후 라이브러리를 생성합니다.
 ```bash
 $ python setup.py build_ext
